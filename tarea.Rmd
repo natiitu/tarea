@@ -19,7 +19,10 @@ library(devtools)
 install.packages("kableExtra")
 library(kableExtra)
 library(knitr)
+library(readxl)
 Titanic <- read_csv("Titanic.csv")
+Sobrevivientes <- read_excel("Sobrevivientes.xlsx")
+NS <- read_excel("NS.xlsx")
 ```
 
 
@@ -55,22 +58,36 @@ En primera instancia, se debe cargar la base datos a utilizar en el estudio y ad
 
 Los resultados arrojan que la base de datos en el estudio contiene la información de un total de 891 pasajeros.De los cuales 216 ellos pertenecían a la clase 1, la clase más lujosa que poseía el barco. De la clase 2, se presentan datos de 184 pasajeros y la clase 3, se observan datos de 491 pasajeros. El desglose del número de sobrevivientes se presentará a continuación y será evidenciada mediante una gráfica presentada en la Figura \@ref(fig:titanic).
 
-```{r}
-
-```
-
 
 ```{r titanic, echo=FALSE, message=FALSE, fig.cap= "**Gráfica de frecuencia de sobrevivientes y no sobrevivientes de las tres clases del barco Titanic.** En la base de datos, los sobrevivientes son presentados como una variable dicotómica. Donde 0 corresponde a los no sobrevivientes y 1, a los sobrevivientes."}
 
-ggplot(Titanic, aes(x = Pclass)) + geom_bar(aes(fill = as.factor(Survived)), position = "dodge") + theme_bw() + xlab("Clase barco")
+ggplot(Titanic, aes(x = Pclass)) + geom_bar(aes(fill = as.factor(Survived)), position = "dodge") + theme_bw() + xlab("Clase barco") + ylab("Frecuencia")
 ```
 
-En términos del análisis descriptivo de la base de datos,el número de sobrevivientes de la clase 1 corresponden a 91 de sexo femenino y 45 del sexo masculino. De la clase 2, se pueden observar que hay 70 mujeres sobrevivientes y 17 para el caso del sexo masculino. En cuanto a la clase 3, hay 72 mujeres sobrevivientes a la tragedia y 47 hombres. Por otra parte, en el caso de los no sobrevivientes, la clase 1 presentan 3 mujeres y 77 hombres que no aguantaron las consecuencias del fatídico accidente. En el caso de la clase 2, se observa que hay 6 mujeres y 91 hombres que no lograron sobrevivir. Mientras que en la clase 3 se observa una mayor cantidad de decesos ya que hay 72 mujeres y alrrededor de 300 hombres que perdieron la vida.Lo decrito anteriormente, puede evidenciarse gráficamente en la Figura \@ref(fig:titanic2).
 
 
-```{r titanic2, echo=FALSE, message=FALSE,fig.cap= "**Gráfica de frecuencia de sobrevivientes y no sobrevivientes según género.**  En la base de datos, los sobrevivientes son presentados como una variable dicotómica. Donde 0 corresponde a los no sobrevivientes y 1, a los sobrevivientes."}
+En términos del análisis descriptivo de la base de datos,el número de sobrevivientes de la clase 1 corresponden a 91 de sexo femenino y 45 del sexo masculino. De la clase 2, se pueden observar que hay 70 mujeres sobrevivientes y 17 para el caso del sexo masculino. En cuanto a la clase 3, hay 72 mujeres sobrevivientes a la tragedia y 47 hombres. Lo mencionado anteriormente es presentado en la Tabla \@ref(tab:Sobrevivientes).
 
-ggplot(Titanic, aes(x = Sex)) + geom_bar(aes(fill = as.factor(Survived)), position = "dodge") + theme_bw() + xlab("Género")
+
+
+```{r Sobrevivientes, echo=FALSE, message=FALSE}
+Tabla <- Sobrevivientes %>% summarise(Clase,Hombres,Mujeres)
+kable(Tabla, digits = 2, caption = "Tabla de frecuencia de hombres y mujeres sobrevivientes a la tragedia del Titanic según clase") %>% kable_styling(bootstrap_options = c("striped", 
+    "hover", "condensed"))
+```
+Por otra parte, en el caso de los no sobrevivientes, la clase 1 presentan 3 mujeres y 77 hombres que no aguantaron las consecuencias del fatídico accidente. En el caso de la clase 2, se observa que hay 6 mujeres y 91 hombres que no lograron sobrevivir. Mientras que en la clase 3 se observa una mayor cantidad de decesos ya que hay 72 mujeres y alrrededor de 300 hombres que perdieron la vida.Lo decrito anteriormente, puede evidenciarse gráficamente en la Figura \@ref(fig:titanic2) y tabulado en la Tabla \@ref(tab:NS).
+
+```{r NS, echo=FALSE, message=FALSE}
+Tabla <- NS %>% summarise(Clase,Hombres,Mujeres)
+kable(Tabla, digits = 2, caption = "Tabla de frecuencia de hombres y mujeres no sobrevivientes a la tragedia del Titanic según clase") %>% kable_styling(bootstrap_options = c("striped", 
+    "hover", "condensed"))
+```
+
+
+
+```{r titanic2, echo=FALSE, message=FALSE, fig.cap= "**Gráfica de frecuencia de sobrevivientes y no sobrevivientes según género.**  En la base de datos, los sobrevivientes son presentados como una variable dicotómica. Donde 0 corresponde a los no sobrevivientes y 1, a los sobrevivientes."}
+
+ggplot(Titanic, aes(x = Sex)) + geom_bar(aes(fill = as.factor(Survived)), position = "dodge") + theme_bw() + xlab("Género") + ylab("Frecuencia")
 ```
 
 ```{r Titanic, echo=FALSE, message=FALSE}
@@ -83,7 +100,6 @@ Clase3NS <- T2 %>% dplyr::filter(Pclass == 3) %>% summarise(Survived,Sex,Pclass)
 Class3NS <- count(Clase3NS,Sex)
 Class2NS <- count(Clase2NS,Sex)
 Class1NS <- count(Clase1NS,Sex)
-
 # Sobrevivientes
 T3 <- T1 %>% group_by(Survived) %>% dplyr::filter(Survived == 1) %>% summarise(Survived,Sex,Pclass)
 Clase1S <- T3 %>% dplyr::filter(Pclass == 1) 
