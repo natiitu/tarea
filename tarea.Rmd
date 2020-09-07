@@ -1,0 +1,116 @@
+---
+title: "Análisis descriptivo de los sobrevivientes y no sobrevivientes del hundimiento del Titanic en términos de sexo y clase"
+date: "07/09/2020"
+output: 
+  bookdown::html_document2:
+  fig_caption: yes
+  toc: FALSE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+install.packages("bookdown")
+library(bookdown)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(devtools)
+install.packages("kableExtra")
+library(kableExtra)
+library(knitr)
+Titanic <- read_csv("Titanic.csv")
+```
+
+
+# Introducción
+
+El barco Titanic fue uno de los primeros transatlánticos que fue construido con las técnicas más modernas de principios del siglo XX, fue construido por Harland y Wolff Shipbuilding en la ciudad de Belfast, en el norte de Irlanda, en el año 1912. Era un barco de lujo de doble casco con un tonelaje de 45.000 toneladas, cuyo pasaje tenía un valor de más cuarenta y dos mil dólares dependiendo de la clase que escogían los pasajeros (Primera, segunda o tercera clase), además de su tecnológica arquitectura para el nivel de esa época, también poseía piscina, cubierta, gimnasio, baños turco y jardín, además de 16 botes salvavidas y 4 balsas (1). A hora de calcular la capacidad de los botes de emergencia, estos sólo daban abasto para 1.200 pasajeros.
+
+## El fatídico viaje
+
+El día 10 de abril de 1912 el Titanic iniciaba su primera travesía desde Southampton (Inglaterra) a la ciudad de Nueva York en USA. Aquel día no estuvo exento de percances, pues el barco zarpó con un retraso de casi 1 hora ya que estuvo a punto de chocar con otro barco. El barco inició su viaje con alrededor de 2.224 personas a bordo, entre pasajeros y tripulantes. Si nos preguntáramos cuál era el propósito del viaje de algunos de los pasajeros, no debemos pensar que solo era un viaje de placer, sino que también, viajaba gente que buscaba un mejor vivir en la ciudad de New York, los cuales, en su mayoría viajaban en la tercera clase (2).	 
+Cuatro días después de comenzar el viaje, la tripulación a cargo comenzó a recibir mensajes desde otros barcos. Dichos mensajes alertaban sobre la presencia de icebergs a lo largo del camino. A pesar de la severidad de estas advertencias, los tripulantes y el especialmente el capitán, Edward Smith. Siendo las 21.20 horas, el capitán, antes de dirigirse a su habitación da la orden de extremar la vigilancia durante la noche y alertar la presencia de icebergs en el camino. A las 23.40 horas, chocó contra un iceberg. Los pasajeros no se dieron cuenta de la colisión. Pero a las 00:05 horas ya era inminente la evacuación del transatlántico, realizando las respectivas llamadas de emergencia. 
+Dos horas y cinco minutos después de la colisión, la nave se hundió completamente, cuyos restos se encuentran hasta el día de hoy en el fondo del Atlántico Norte a unos 400 kilómetros al Sureste de Terranova.
+
+## Los codiciados botes y los afortunados sobrevivientes
+
+Tal como se mencionó en el primer párrafo, el barco poseía 16 botes salvavidas y 4 balsas, lo cual no fueron suficientes para el total de pasajeros que se encontraban en el barco a la hora de la colisión. En primera instancia los botes se completaron con gente de la primera clase, teniendo preferencia mujeres y niños y aquellos que no lograron subir a la barcaza (gran parte de la tripulación y la tercera clase) tenían chalecos salvavidas, pero dada las bajas temperaturas de las aguas del Atlántico norte, gran parte de ellos murieron de hipotermia. Por otra parte, en altamar se encontraba otra embarcación, el Carpathia, un trasatlántico que había partido desde Nueva York.
+Al recibir noticias del accidente, ellos cambiaron su rumbo para socorrer a los sobrevivientes. El barco logró rescatar 704 pasajeros y subió a bordo los bordes del extinto Titanic (3). En resumidas cuentas, del total de pasajeros que viajaban a bordo del Titanic (N=2.222 personas), tan solo el 32 por cierto de ellos, lograron salvarse (2).
+
+## La suerte de los no sobrevivientes
+
+Por otra parte, los no sobrevivientes corrieron con distinta suerte. La empresa White Star Line envió cuatro barcos para explorar la zona del desastre con la misión de rescatar los cadáveres de la tragedia. A lo largo de los tres meses solo consiguieron recuperar 328 muertos, de los cuales 119 fueron arrojados de nuevo al mar y los 209 restantes, 150 cuerpos no fueron reclamados por sus familias y 59 fueron reclamados y enterrados de manera tradicional. La decisión de tirar o recuperar los cuerpos desde el mar, no fue una decisión neutral, ya que los barcos tenían por orden clasificar a los cadáveres según la cantidad de dineros y pertenencias que poseían a la hora de encontrarlos.
+Dado que los cuerpos de los pasajeros de primera y segunda clase tenía pertenencias costosas a la vista, era más fácil de reconocerlos y mayor era la probabilidad de que su cuerpo fuera reclamado.
+En el caso de los pasajeros de tercera clase, era muy difícil de reconocer sus cuerpos debido a desfiguración de sus extremidades, por lo que estos eran arrojados nuevamente al mar (4). 
+Esta situación revela la marcada diferencia social que ya existía en esa época, lo cual es claramente retratado en la película “Titanic” del director James Cameron en el año 1997. Lo que nos lleva realizarnos ciertas preguntas como: ¿Cuántas mujeres y hombres pertenecientes a la clase 1,2 y 3 sobrevivieron? y a su vez, surge la incógnita de ¿Cuántas mujeres y hombres de las distintas clases no sobrevivieron? Es por esto que el propósito de este estudio explorativo es analizar la base de datos “Titanic: Machine Learning from Disaster” (5) y de ella extraer los datos de las variables de sobrevivientes, clase y sexo y analizarlos descriptivamente, realizando los gráficos correspondientes mediante el software Rstudio.
+
+# Metodología
+
+En cuanto a la metodología empleada en este estudio. Se realizó el análisis descriptivo de la base de datos “Titanic: Machine Learning from Disaster”, presentes en la página: https://www.kaggle.com/c/titanic. Estos datos fueron importados al software Rstudio versión 1.3.959 y mediante el uso de Rmarkdown y el paquete “tidyverse”, “dplyr” y “ggplot2” se realizó el análisis y las gráficas de visualización de datos.
+
+# Resultados
+
+En primera instancia, se debe cargar la base datos a utilizar en el estudio y además, se debe cargar los paquetes de "dplyr", "tidyverse" y "ggplot2". Para obtener el número de sobrevivientes y no sobrevivientes en términos de clase y sexo, se debe agrupar y filtrar en base a si es o no sobreviviente del accidente pues, en la base de datos, esta variable es presentada como dicotómica (1 si es sobreviviente y 0 si no lo es). 
+
+Los resultados arrojan que la base de datos en el estudio contiene la información de un total de 891 pasajeros.De los cuales 216 ellos pertenecían a la clase 1, la clase más lujosa que poseía el barco. De la clase 2, se presentan datos de 184 pasajeros y la clase 3, se observan datos de 491 pasajeros. El desglose del número de sobrevivientes se presentará a continuación y será evidenciada mediante una gráfica presentada en la Figura \@ref(fig:titanic).
+
+```{r}
+
+```
+
+
+```{r titanic, echo=FALSE, message=FALSE, fig.cap= "**Gráfica de frecuencia de sobrevivientes y no sobrevivientes de las tres clases del barco Titanic.** En la base de datos, los sobrevivientes son presentados como una variable dicotómica. Donde 0 corresponde a los no sobrevivientes y 1, a los sobrevivientes."}
+
+ggplot(Titanic, aes(x = Pclass)) + geom_bar(aes(fill = as.factor(Survived)), position = "dodge") + theme_bw() + xlab("Clase barco")
+```
+
+En términos del análisis descriptivo de la base de datos,el número de sobrevivientes de la clase 1 corresponden a 91 de sexo femenino y 45 del sexo masculino. De la clase 2, se pueden observar que hay 70 mujeres sobrevivientes y 17 para el caso del sexo masculino. En cuanto a la clase 3, hay 72 mujeres sobrevivientes a la tragedia y 47 hombres. Por otra parte, en el caso de los no sobrevivientes, la clase 1 presentan 3 mujeres y 77 hombres que no aguantaron las consecuencias del fatídico accidente. En el caso de la clase 2, se observa que hay 6 mujeres y 91 hombres que no lograron sobrevivir. Mientras que en la clase 3 se observa una mayor cantidad de decesos ya que hay 72 mujeres y alrrededor de 300 hombres que perdieron la vida.Lo decrito anteriormente, puede evidenciarse gráficamente en la Figura \@ref(fig:titanic2).
+
+
+```{r titanic2, echo=FALSE, message=FALSE,fig.cap= "**Gráfica de frecuencia de sobrevivientes y no sobrevivientes según género.**  En la base de datos, los sobrevivientes son presentados como una variable dicotómica. Donde 0 corresponde a los no sobrevivientes y 1, a los sobrevivientes."}
+
+ggplot(Titanic, aes(x = Sex)) + geom_bar(aes(fill = as.factor(Survived)), position = "dodge") + theme_bw() + xlab("Género")
+```
+
+```{r Titanic, echo=FALSE, message=FALSE}
+#No sobrevivientes
+T1 <- summarise(Titanic, Survived, Sex, Pclass)
+T2 <- T1 %>% group_by(Survived) %>% dplyr::filter(Survived == 0) %>% summarise(Survived,Sex,Pclass)
+Clase1NS <- T2 %>% dplyr::filter(Pclass == 1) %>% summarise(Survived,Sex,Pclass)
+Clase2NS <- T2 %>% dplyr::filter(Pclass == 2) %>% summarise(Survived,Sex,Pclass)
+Clase3NS <- T2 %>% dplyr::filter(Pclass == 3) %>% summarise(Survived,Sex,Pclass)
+Class3NS <- count(Clase3NS,Sex)
+Class2NS <- count(Clase2NS,Sex)
+Class1NS <- count(Clase1NS,Sex)
+
+# Sobrevivientes
+T3 <- T1 %>% group_by(Survived) %>% dplyr::filter(Survived == 1) %>% summarise(Survived,Sex,Pclass)
+Clase1S <- T3 %>% dplyr::filter(Pclass == 1) 
+Clase2S <- T3 %>% dplyr::filter(Pclass == 2) 
+Clase3S <- T3 %>% dplyr::filter(Pclass == 3) 
+Class3S <- count(Clase3S,Sex)
+Class2S <- count(Clase2S,Sex)
+Class1S <- count(Clase1S,Sex)
+```
+
+# Discusiones y Conclusiones
+Tras la realización del estudio se llevó a cabo el contraste de los resultados obtenidos con lo que está descrito en las referencias utilizadas en esta investigación. El análisis descriptivo arrojo diferentes cifras de sobreviviente y no sobrevivientes a lo largo de las clases. Dichos valores denotan del gran número de personas muertas durante el trágico accidente del barco. En cuanto a la base de datos, en primera instancia, se observa que existen incongruencias entre el número pasajeros que iban en el barco ya que la base de datos solo presenta la información de 891 pasajeros y se tiene reportado que el número total de personas a bordo del Titanic durante la travesía inaugural era de 2.201: 885 miembros de la tripulación y 1.316 pasajeros (1), esto nos adelanta a pensar que falta información sobre los demás pasajeros y que además, los resutados de nuestro estudio no serán del todo representado debido a la presencia de esta incongruencia. Pero de todas formas este estudio sirve de modelo a priori para futuros estudios ya que nos hace tener una idea aproximada del número de sobrevivientes y no sobrevivientes del accidente.
+
+Por otra parte, cabe señalar que en nuestros resultados se evidencia las diferencias económicas que ya existían en esa época, pues, si observamos la clase que tuvo un mayor número de sobrevivientes, esta es la clase 1, la clase más lujosa del barco. Seguido de la 2 y de la 3, siendo esta última la clase más bajar en términos económicos (2).
+Tal como se mencionó en la introducción, el barco no poseía el número suficiente de balsas y botes salvavidas para evacuar a la totalidad de pasajeros que se encontraban a bordo del barco aquel fatídico día, por lo que los que tenían preferencias en usarlas eran mujeres y niños, especialmente, las pertenecientes a la clase 1 y 2 (6). Se cree que gran parte de las personas que no pudieron subirse a los botes se lanzaron al agua con salvavidas pero las gélidas aguas les generaban posteriormente hipotermia. Esto se puede ver evidenciado en nuestros resultados ya que la mayor cantidad de hombres muertos a lo largo de las clases, se observan en la clase 3.A la hora del rescate de los cuerpos desde altamar, existían ordenes de cuáles cuerpos debían ser recuperados desde el agua (3). Los cuerpos debían clasificarse según las pertenencias y dinero que poseían por lo que las personas se encontraban en la clase 1 debían ser rescatados ya que era mayor la probabilidad de que fuesen reclamados sus cuerpos. Todos los demás cuerpos debían ser devueltos al mar. Las diferencias sociales eran bastantes en esa época tanto que daban preferencia a la hora de entregarles una santa sepultura. Por otra parte, los resultados evidencian que se tenía un gran valor a las mujeres y niños ya que en términos de cifras, a nivel de las clases el número de mujeres sobrevivientes a la tragedia es mucho mayor con respecto a los hombres. 
+
+En conclusión, este es un estudio explorativo no representativo dada las incongruencias entre la base de datos utilizada y la realidad del número de personas sobrevivientes y no sobrevivientes de la tragedia. Este estudio denota el valor que se tenía a las mujeres y niños de esa época. En donde se observa que hay un gran de mujeres sobrevivientes a lo largo de las tres clases pero por otra parte, evidencia la realidad de las injusticias sociales las cuales son plasmadas en las referencias, en que la probabilidad de salvarse de la tragedia dependía del estatus social. Aquellos de la primera clase tenían preferencia en subirse en las barcas de evacuación. Mientras que los de las clases más bajas que no tuvieron la posibilidad de subirse a una balsa, tuvieron que lanzarse al mar, muriendo posteriormente de hipotermia.
+
+# Referencias
+
+(1) *La historia del titanic:* http://alcazaba.unex.es/~rgorlar/real.html. Revisado 05.09.2020.
+(2) *Titanic, entre lujo y tragedia:* https://www.muyhistoria.es/contemporanea/fotos/fotos-hundimiento-titanic-detalle/fotos-titanic-pone-marcha-2644. *Revisado 05.09.2020.*.
+(3) *Los equipos que hicieron posible el dramático rescate de 700 sobrevivientes del Titanic:*
+https://www.bbc.com/mundo/noticias-48877073.*Revisado 05.09.2020.*.
+(4) *¿Qué paso de verdad con los cadáveres de los pasajeros del Titanic?:*	
+https://www.elconfidencial.com/alma-corazon-vida/2017-03-02/cadaveres-pobres-titanic_1339531/.*Revisado 05.09.2020.*.
+(5) *Titanic: Machine Learning from Disaster:*	
+https://www.kaggle.com/c/titanic. *Revisado 05.09.2020.*.
+(6) *La estructura social del Titanic:*	 https://www.infolibre.es/noticias/club_infolibre/librepensadores/2020/02/24/la_estructura_social_del_titanic_104262_1043.html. *Revisado 05.09.2020.*.
+
